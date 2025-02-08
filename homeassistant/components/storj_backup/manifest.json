@@ -1,6 +1,7 @@
 {
   "domain": "storj_backup",
   "name": "storj_integration",
+  "after_dependencies": ["backup"],
   "codeowners": ["@bkjohnson"],
   "config_flow": true,
   "dependencies": [],

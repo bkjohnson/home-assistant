@@ -30,8 +30,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: StorjConfigEntry) -> boo
     # TODO 3. Store an API object for your platforms to access
     # entry.runtime_data = MyAPI(...)
 
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = StorjClient(await instance_id.async_get(hass))
+    entry.runtime_data = StorjClient(await instance_id.async_get(hass))
 
     return True
 

@@ -9,7 +9,6 @@ from typing import Any
 from homeassistant.components.backup import AgentBackup, BackupAgent, BackupAgentError
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.util import slugify
 
 from . import DATA_BACKUP_AGENT_LISTENERS, StorjConfigEntry
 from .const import DOMAIN
@@ -59,7 +58,7 @@ class StorjBackupAgent(BackupAgent):
         super().__init__()
         assert config_entry.unique_id
         self.name = config_entry.title
-        self.unique_id = slugify(config_entry.unique_id)
+        self.unique_id = config_entry.unique_id
         self._client = config_entry.runtime_data
 
     async def async_upload_backup(
