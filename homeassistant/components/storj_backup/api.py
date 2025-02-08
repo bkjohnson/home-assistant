@@ -1,0 +1,94 @@
+"""API for Home Assistant to interact with Storj."""
+
+from __future__ import annotations
+
+import asyncio
+from collections.abc import AsyncIterator, Callable, Coroutine
+import logging
+from typing import Any
+
+from homeassistant.components.backup import AgentBackup, suggested_filename
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class StorjClient:
+    """Client for Storj uplink CLI tool."""
+
+    def __init__(
+        self,
+        ha_instance_id: str,
+    ) -> None:
+        """Initialize."""
+        self._ha_instance_id = ha_instance_id
+        # self.satellite = satellite
+
+    async def authenticate(self, access_grant: str) -> bool:
+        """Test if we can authenticate with the host."""
+        result = await asyncio.create_subprocess_exec(
+            "uplink", "access", "import", "ha2", access_grant
+        )
+        await result.communicate()
+        return result.returncode == 0
+
+    async def async_upload_backup(
+        self,
+        open_stream: Callable[[], Coroutine[Any, Any, AsyncIterator[bytes]]],
+        backup: AgentBackup,
+    ) -> None:
+        """Upload a backup."""
+        # backup_metadata = {
+        #     "name": suggested_filename(backup),
+        #     "description": json.dumps(backup.as_dict()),
+        #     "properties": {
+        #         "home_assistant": "backup",
+        #         "instance_id": self._ha_instance_id,
+        #         "backup_id": backup.backup_id,
+        #     },
+        # }
+        _LOGGER.debug(
+            "Uploading backup: %s",
+            suggested_filename(backup),
+            # backup.backup_id,
+            # backup_metadata,
+        )
+        # await self._api.upload_file(
+        #     backup_metadata,
+        #     open_stream,
+        #     timeout=ClientTimeout(total=_UPLOAD_AND_DOWNLOAD_TIMEOUT),
+        # )
+        # _LOGGER.debug(
+        #     "Uploaded backup: %s to: '%s'",
+        #     backup.backup_id,
+        #     backup_metadata["name"],
+        # )
+
+    async def async_list_backups(self) -> list[AgentBackup]:
+        """List the backups currently in the bucket."""
+        # query = " and ".join(
+        #     [
+        #         "properties has { key='home_assistant' and value='backup' }",
+        #         f"properties has {{ key='instance_id' and value='{self._ha_instance_id}' }}",
+        #         "trashed=false",
+        #     ]
+        # )
+        # res = await self._api.list_files(
+        #     params={"q": query, "fields": "files(description)"}
+        # )
+        backups: list[AgentBackup] = []
+        # for file in res["files"]:
+        #     backup = AgentBackup.from_dict(json.loads(file["description"]))
+        #     backups.append(backup)
+        return backups
+
+    # async def async_list_backups(self) -> None:
+    #     """List the backups currently in the bucket."""
+    #     _LOGGER.debug("TODO")
+
+    async def async_delete_backup(self) -> None:
+        """Delete a specified backup from the bucket."""
+        _LOGGER.debug("TODO")
+
+    async def async_download_backup(self) -> None:
+        """Download a backup to the local system."""
+        _LOGGER.debug("TODO")

@@ -1,0 +1,13 @@
+{
+  "domain": "storj_backup",
+  "name": "storj_integration",
+  "codeowners": ["@bkjohnson"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/storj_backup",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": []
+}
